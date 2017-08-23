@@ -43,4 +43,6 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+   Mux16(a=0, b=x, sel=zx, out=newx);
+   //TODO: Use Mux16 for the rest of the conditions
 }
