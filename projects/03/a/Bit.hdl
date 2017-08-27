@@ -15,4 +15,6 @@ CHIP Bit {
 
     PARTS:
     // Put your code here:
+    Mux(a=feedback, b=in, sel=load, out=selout);
+    DFF(in=selout, out=out, out=feedback);
 }
