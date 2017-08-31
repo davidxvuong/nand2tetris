@@ -7,3 +7,38 @@
 // (R0, R1, R2 refer to RAM[0], RAM[1], and RAM[2], respectively.)
 
 // Put your code here.
+
+	@0
+	D=M
+
+	@addval
+	M=D
+
+	@1
+	D=M
+
+	@limit
+	M=D
+
+	@result
+	M=0
+
+(LOOP)
+	@addval
+	D=M
+
+	@result
+	M=D+M
+
+	@limit
+	MD=M-1
+
+	@LOOP
+	D; JNE
+
+	@LOOP
+
+
+(INFINITELOOP)
+	@INFINITELOOP
+	0; JMP
