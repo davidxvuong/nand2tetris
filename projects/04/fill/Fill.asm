@@ -12,3 +12,63 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+
+//Base address for Screen: 16384
+//Address for Keyboard: 24576
+
+(LOOP)
+	@SCREEN
+	D=A
+
+	@i
+	M=D
+
+	@KBD
+	D=M
+
+	@WHITE
+	D; JEQ		//branch if nothing is pressed 
+
+
+//set screen to black
+(BLACK)
+	@i
+	A=M
+	M=-1
+
+	@i
+	M=M+1
+
+	@KBD
+	D=A
+
+	@i
+	D=M-D
+
+	@BLACK
+	D; JNE
+
+	@SKIP
+	0; JEQ
+
+(WHITE)
+	@i
+	A=M
+	M=0
+
+	@i
+	M=M+1
+
+	@KBD
+	D=A
+
+	@i
+	D=M-D
+
+	@WHITE
+	D; JNE
+
+(SKIP)
+
+	@LOOP
+	0; JEQ
