@@ -20,24 +20,27 @@
 	@limit
 	M=D
 
-	@result
+	@2
 	M=0
 
 (LOOP)
+	@limit
+	D=M
+
+	@INFINITELOOP
+	D; JEQ
+
 	@addval
 	D=M
 
-	@result
+	@2
 	M=D+M
 
 	@limit
-	MD=M-1
+	M=M-1
 
 	@LOOP
-	D; JNE
-
-	@LOOP
-
+	0; JEQ
 
 (INFINITELOOP)
 	@INFINITELOOP
