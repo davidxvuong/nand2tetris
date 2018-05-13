@@ -60,8 +60,8 @@ CHIP Load {
 	Or(a=loadtemp2, b=jne, out=loadtemp3);
 	Or(a=loadtemp3, b=jlt, out=loadtemp4);
 	Or(a=loadtemp4, b=jle, out=loadtemp5);
-	Or(a=loadtemp5, b=jmp, out=load);
+	Or(a=loadtemp5, b=jmp, out=load, out=loadtemp6);
 
 	//Increment
-	Not(in=jmp, out=inc);
+	Not(in=loadtemp6, out=inc);
 }
