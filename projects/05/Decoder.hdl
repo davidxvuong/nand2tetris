@@ -2,6 +2,7 @@ CHIP Decoder {
 	IN instr[16];
 
 	OUT a,
+		nota,
 		dest[3],
 		jump[3],
 		comp[6];
@@ -29,7 +30,10 @@ CHIP Decoder {
 	And(a=instr[0], b=instr[15], out=jump[2]);
 
 	//a control signal
-	And(a=instr[0], b=instr[3], out=a);
+	And(a=instr[0], b=instr[3], out=a, out=tempa);
+
+	//nota control signal
+	Not(in=tempa, out=nota);
 
 	//c1 control signal
 	And(a=instr[0], b=instr[4], out=comp[0]);
