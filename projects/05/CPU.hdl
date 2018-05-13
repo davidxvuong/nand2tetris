@@ -40,4 +40,30 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+
+    //Decoder
+    Decoder(instr=instruction, a=a, opcode=opcode, dest[0]=d1, dest[1]=d2, dest[2]=d3, jump=jump, jump[0]=j1, jump[1]=j2, jump[2]=j3, comp[0]=c1, comp[1]=c2, comp[2]=c3, comp[3]=c4, comp[4]=c5, comp[5]=c6, dest[2]=writeM);
+    
+    //A-Register Mux input
+    Mux16(a=instruction, b=outMtemp, sel=opcode, out=areginput);
+
+    //A-Register
+    Not(in=opcode, out=notopcode);
+    Or(a=notopcode, b=d1, out=aregload);
+    ARegister(in=areginput, load=aregload, out=aregoutput, out[0..14]=addressM);
+
+    //ALU input 2 mux
+    Mux16(a=aregoutput, b=inM, sel=a, out=aluinput2);
+
+    //D-Register
+    DRegister(in=outMtemp, load=d2, out=aluinput1);
+
+    //ALU
+    ALU(x=aluinput1, y=aluinput2, zx=c1, nx=c2, zy=c3, ny=c4, f=c5, no=c6, out=outM, out=outMtemp, zr=zr, ng=ng);
+
+    //Load
+    Load(zr=zr, ng=ng, jump=jump, load=load, inc=inc);
+
+    //Program Counter
+    PC(in=aregoutput, load=load, inc=inc, reset=reset, out[0..14]=pc);
 }
