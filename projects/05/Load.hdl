@@ -1,0 +1,67 @@
+CHIP Load {
+	IN 	zr,
+		ng,
+		jump[3];
+
+	OUT load,
+		inc;
+
+	PARTS:
+
+	//negated signals
+	Not(in=zr, out=notzr);
+	Not(in=ng, out=notng);
+	Not(in=jump[0], out=notj1);
+	Not(in=jump[1], out=notj2);
+	Not(in=jump[3], out=notj3);
+
+	//JGT
+	And(a=notng, b=notzr, out=jgttemp1);
+	And(a=jgttemp1, b=notj1, out=jgttemp2);
+	And(a=jgttemp2, b=notj2, out=jgttemp3);
+	And(a=jgttemp3, b=jump[2], out=jgt);
+
+	//JEQ
+	And(a=zr, b=notj1, out=jeqtemp1);
+	And(a=jeqtemp1, b=jump[1], out=jeqtemp2);
+	And(a=jeqtemp2, b=notj3, out=jeqtemp3);
+	And(a=jeqtemp3, b=notng, out=jeq);
+
+	//JGE
+	And(a=jump[1], b=jump[2], out=jgetemp1);
+	And(a=jgetemp1, b=notj1, out=jgetemp2);
+	Or(a=notng, b=zr, out=zrnotng);
+	And(a=jgetemp2, b=zrnotng, out=jge);
+
+	//JNE
+	And(a=jump[0], b=jump[2], out=jnetemp1);
+	And(a=jnetemp2, b=notj2, out=jnetemp2);
+	And(a=jnetemp2, b=notzr, out=jne);
+
+	//JLT
+	And(a=jump[0], b=notj2, out=jlttemp1);
+	And(a=jlttemp1, b=notj3, out=jlttemp2);
+	And(a=jlttemp2, b=notzr, out=jlttemp3);
+	And(a=jlttemp3, b=ng, out=jlt);
+
+	//JLE
+	Or(a=zr, b=ng, out=zrng);
+	And(a=zrng, b=notj3, out=jletemp1);
+	And(a=jletemp1, b=jump[0], out=jletemp2);
+	And(a=jletemp2, b=jump[1], out=jle);
+
+	//JMP
+	And(a=jump[0], b=jump[1], out=jmptemp1);
+	And(jmptemp1, b=jump[2], out=jmp);
+
+	//Load
+	Or(a=jgt, b=jeq, out=loadtemp1);
+	Or(a=loadtemp1, b=jge, out=loadtemp2);
+	Or(a=loadtemp2, b=jne, out=loadtemp3);
+	Or(a=loadtemp3, b=jlt, out=loadtemp4);
+	Or(a=loadtemp4, b=jle, out=loadtemp5);
+	Or(a=loadtemp5, b=jmp, out=load);
+
+	//Increment
+	Not(in=jmp, out=inc);
+}

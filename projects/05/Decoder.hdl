@@ -1,0 +1,51 @@
+CHIP Decoder {
+	IN instr[16];
+
+	OUT a,
+		dest[3],
+		jump[3],
+		comp[6];
+
+	PARTS:
+
+	//d1 control signal
+	Not(in=instr[0], out=opcode);
+	And(a=instr[0], b=instr[10], out=cd1);
+	Or(a=opcode, b=cd1, out=dest[0]);
+
+	//d2 control signal
+	And(a=instr[0], b=instr[11], out=dest[1]);
+
+	//d3 control signal
+	And(a=instr[0], b=instr[12], out=dest[2]);
+
+	//j1 control signal
+	And(a=instr[0], b=instr[13], out=jump[0]);
+
+	//j2 control signal
+	And(a=instr[0], b=instr[14], out=jump[1]);
+
+	//j3 control signal
+	And(a=instr[0], b=instr[15], out=jump[2]);
+
+	//a control signal
+	And(a=instr[0], b=instr[3], out=a);
+
+	//c1 control signal
+	And(a=instr[0], b=instr[4], out=comp[0]);
+
+	//c2 control signal
+	And(a=instr[0], b=instr[5], out=comp[1]);
+
+	//c3 control signal
+	And(a=instr[0], b=instr[6], out=comp[2]);
+
+	//c4 control signal
+	And(a=instr[0], b=instr[7], out=comp[3]);
+
+	//c5 control signal
+	And(a=instr[0], b=instr[8], out=comp[4]);
+
+	//c6 control signal
+	And(a=instr[0], b=instr[9], out=comp[5]);
+}
