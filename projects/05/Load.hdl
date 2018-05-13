@@ -13,7 +13,7 @@ CHIP Load {
 	Not(in=ng, out=notng);
 	Not(in=jump[0], out=notj1);
 	Not(in=jump[1], out=notj2);
-	Not(in=jump[3], out=notj3);
+	Not(in=jump[2], out=notj3);
 
 	//JGT
 	And(a=notng, b=notzr, out=jgttemp1);
@@ -35,7 +35,7 @@ CHIP Load {
 
 	//JNE
 	And(a=jump[0], b=jump[2], out=jnetemp1);
-	And(a=jnetemp2, b=notj2, out=jnetemp2);
+	And(a=jnetemp1, b=notj2, out=jnetemp2);
 	And(a=jnetemp2, b=notzr, out=jne);
 
 	//JLT
@@ -52,7 +52,7 @@ CHIP Load {
 
 	//JMP
 	And(a=jump[0], b=jump[1], out=jmptemp1);
-	And(jmptemp1, b=jump[2], out=jmp);
+	And(a=jmptemp1, b=jump[2], out=jmp);
 
 	//Load
 	Or(a=jgt, b=jeq, out=loadtemp1);
