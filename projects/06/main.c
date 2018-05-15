@@ -13,29 +13,6 @@
 #endif
 
 int main(int argc, char* argv[]) {
-	initialize_table();
-	print_table();
-
-	char tmp[STRING_BUFFER];
-	int i;
-
-	for (i = 0; i < 16; i++) {
-		sprintf(tmp, "R%d", i);
-		printf("%d\n", lookup(tmp));
-	}
-
-	printf("%d\n", lookup("SCREEN"));
-	printf("%d\n", lookup("KBD"));
-	printf("%d\n", lookup("SP"));
-	printf("%d\n", lookup("LCL"));
-	printf("%d\n", lookup("ARG"));
-	printf("%d\n", lookup("THIS"));
-	printf("%d\n", lookup("THAT"));
-
-	kill_table();
-
-	return 0;
-
 	if (argc > 2) {
 		printf("Invalid parameters\n");
 
