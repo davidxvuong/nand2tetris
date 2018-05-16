@@ -10,16 +10,22 @@ void parse_labels(char* instruction, int instruction_num) {
 	regex_t regex;
 	int reti;
 
-	regcomp(&regex, "(\\(|\\))", 0);
-	reti = regexec(&regex, instruction, 0, NULL, 0);
-	printf("%d %s", instruction_num, instruction);
-	if (!reti) {
-	    printf("Match\n\n");
-	}
-	else if (reti == REG_NOMATCH) {
-	    printf("No match\n\n");
+	reti =regcomp(&regex, "(\\(\\w*|\\))", REG_EXTENDED);
+
+	if (reti) {
+		printf("Failed to compile regex\n");
 	}
 
+	reti = regexec(&regex, instruction, 0, NULL, 0);
+	if (!reti) {
+		//Found label. remove brackets and store data into symbol table
+		char* pch;
+		pch = strtok(instruction, "()");
+
+		if (pch != NULL) {
+			insert(pch, instruction_num);
+		}
+	}
 
 }
 
@@ -46,6 +52,27 @@ bool is_instruction(char* instruction) {
 	//TODO: make sure that the line is either a label, A, or C instruction
 
 	return true;
+}
+
+void remove_comments(char* instruction) {
+	int index;
+	char* ptr_to_index;
+
+	ptr_to_index = strstr(instruction, "//");
+	index = (int)(ptr_to_index - instruction);
+
+	if (index > 0) {
+		//Found comment after an instruction
+		char* pch;
+		pch = strtok (instruction,"//");
+
+		if (pch != NULL) {
+			// printf("[remove_comments] %s\n", pch);
+			strcat(pch, "\n");
+			strcpy(instruction, pch);
+		}
+	}
+
 }
 
 //Helper function

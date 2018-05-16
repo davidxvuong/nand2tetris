@@ -110,6 +110,7 @@ int main(int argc, char* argv[]) {
 		fgets(buf, STRING_BUFFER, fp);
 
 		if (is_instruction(buf)) {
+			remove_comments(buf);
 			int line_num = insert_list(buf);
 			parse_labels(buf, line_num);
 		}
@@ -117,6 +118,7 @@ int main(int argc, char* argv[]) {
 
 	fclose(fp);
 
+	print_table();
 	// print_list();
 
 	kill_list();
