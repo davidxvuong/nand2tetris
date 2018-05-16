@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include <regex.h>
 #include "symbol_table.h"
 #include "hack_isa.h"
 //TODO: remove include statement
@@ -13,5 +14,8 @@
 uint16_t parse_instruction(char* instruction);
 void parse_labels(char* instruction, int instruction_num);
 bool is_instruction(char* instruction);
+
+//Helper functions
+void trim(char* str);
 
 #endif

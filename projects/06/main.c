@@ -15,6 +15,7 @@
 
 typedef struct node {
 	char* instruction;
+	int line_num;
 	struct node* next;
 } node_t;
 
@@ -43,26 +44,33 @@ void kill_list() {
 	free(list);
 }
 
-void insert_list(char* instruction) {
+int insert_list(char* instruction) {
 	node_t* node = (node_t*)(malloc(sizeof(char)));
 	node_t* ptr;
+	int line_num;
 
 	node -> instruction = instruction;
 
 	if (list -> head == NULL) {
 		list -> head = node;
+		node -> line_num = 1;
 	}
 	else {
 		ptr = list -> head;
+		line_num = (list -> head -> line_num) + 1;
 
 		while (ptr -> next != NULL) {
 			ptr = ptr -> next;
+			line_num++;
 		}
-
+		
+		node -> line_num = line_num;
 		ptr -> next = node;
 	}
 
 	++(list -> length);
+
+	return (node -> line_num);
 }
 
 void print_list() {
@@ -80,8 +88,6 @@ int main(int argc, char* argv[]) {
 
 		return -1;
 	}
-
-	//TODO: check for valid .asm file
 
 	FILE* fp = NULL;
 
@@ -104,14 +110,14 @@ int main(int argc, char* argv[]) {
 		fgets(buf, STRING_BUFFER, fp);
 
 		if (is_instruction(buf)) {
-			insert_list(buf);
-			
+			int line_num = insert_list(buf);
+			parse_labels(buf, line_num);
 		}
 	}
 
 	fclose(fp);
 
-	print_list();
+	// print_list();
 
 	kill_list();
 	kill_table();
