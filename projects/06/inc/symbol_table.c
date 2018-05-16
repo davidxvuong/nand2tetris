@@ -26,7 +26,7 @@ void initialize_table() {
 void kill_table() {
 	map_t* ptr;
 
-	while (symbol_table -> head -> next != NULL) {
+	while (symbol_table -> head != NULL) {
 		ptr = symbol_table -> head;
 		symbol_table -> head = symbol_table -> head -> next;
 

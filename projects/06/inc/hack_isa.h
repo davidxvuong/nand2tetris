@@ -1,6 +1,12 @@
 #ifndef HACK_ISA_H
 #define HACK_ISA_H
 
+//C-instruction leading bits
+#define C_INSTR_LEAD_BITS	7
+
+//A-Instrcution leading bits
+#define A_INSTR_LEAD_BITS	0
+
 //Comp bits
 #define COMP_ZERO			42 				//0101010
 #define COMP_ONE 			63				//0111111
