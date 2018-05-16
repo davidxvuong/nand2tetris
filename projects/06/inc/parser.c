@@ -6,7 +6,6 @@ uint16_t parse_instruction(char* instruction) {
 
 void parse_labels(char* instruction, int instruction_num) {
 	//Regex for matching brackets: (\(|\))
-	//TODO: Regex not working
 	regex_t regex;
 	int reti;
 
@@ -19,14 +18,12 @@ void parse_labels(char* instruction, int instruction_num) {
 	reti = regexec(&regex, instruction, 0, NULL, 0);
 	if (!reti) {
 		//Found label. remove brackets and store data into symbol table
-		char* pch;
-		pch = strtok(instruction, "()");
+		char* pch = strtok(instruction, "()");
 
 		if (pch != NULL) {
 			insert(pch, instruction_num);
 		}
 	}
-
 }
 
 bool is_instruction(char* instruction) {

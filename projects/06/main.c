@@ -49,7 +49,10 @@ int insert_list(char* instruction) {
 	node_t* ptr;
 	int line_num;
 
-	node -> instruction = instruction;
+	char* copy_instr = (char*)(malloc(sizeof(char) * STRING_BUFFER));
+	memcpy(copy_instr, instruction, sizeof(char) * STRING_BUFFER);
+
+	node -> instruction = copy_instr;
 
 	if (list -> head == NULL) {
 		list -> head = node;
@@ -116,10 +119,9 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	fclose(fp);
-
+	fclose(fp);	
 	print_table();
-	// print_list();
+	print_list();
 
 	kill_list();
 	kill_table();

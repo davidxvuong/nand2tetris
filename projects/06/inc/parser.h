@@ -11,6 +11,10 @@
 //TODO: remove include statement
 #include <stdio.h>
 
+#ifndef STRING_BUFFER
+#define STRING_BUFFER 256
+#endif
+
 uint16_t parse_instruction(char* instruction);
 void parse_labels(char* instruction, int instruction_num);
 bool is_instruction(char* instruction);
