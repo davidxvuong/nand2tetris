@@ -1,6 +1,6 @@
 #include "parser.h"
 
-uint16_t parse_instruction(char* instruction) {
+char* translate_instruction(char* instruction) {
 	return 0;
 }
 

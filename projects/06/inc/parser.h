@@ -15,7 +15,11 @@
 #define STRING_BUFFER 256
 #endif
 
-uint16_t parse_instruction(char* instruction);
+#ifndef MACHINE_CODE_LENGTH
+#define MACHINE_CODE_LENGTH 16
+#endif
+
+char* translate_instruction(char* instruction);
 void parse_labels(char* instruction, int instruction_num);
 bool is_instruction(char* instruction);
 void remove_comments(char* instruction);
