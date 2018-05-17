@@ -85,6 +85,27 @@ void print_list() {
 	}
 }
 
+//Replace the first occurrance of the substring
+char* replace_substring(const char* string, const char* old_string, const char* new_string) {
+	char* result = NULL;
+	int old_string_length = strlen(old_string);
+	int new_string_length = strlen(new_string);
+	int string_length = strlen(string);
+	char* ptr = strstr(string, old_string);
+
+	if (ptr == NULL) {
+		return NULL;
+	}
+
+	result = (char*)(malloc(sizeof(char) * (string_length - old_string_length + new_string_length)));
+
+	strncpy(result, string, string_length - old_string_length);
+	result[string_length - old_string_length] = '\0';
+	strcat(result, new_string);
+
+	return result;
+}
+
 int main(int argc, char* argv[]) {
 	if (argc > 2) {
 		printf("Invalid parameters\n");
@@ -119,9 +140,18 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	fclose(fp);	
-	print_table();
-	print_list();
+	fclose(fp);
+
+	fp = NULL;
+
+	char* hack_file_name = replace_substring(argv[ARGV_INDEX], "asm", "hack");
+
+	fp = fopen(hack_file_name, "w");
+
+	//Perform 2nd pass and translate program into HACK machine code
+	// node_t* instruction = 
+
+	fclose(fp);
 
 	kill_list();
 	kill_table();
