@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <regex.h>
+#include <ctype.h>
 #include "symbol_table.h"
 #include "hack_isa.h"
 //TODO: remove include statement
@@ -38,14 +39,18 @@
 
 #endif
 
+int memory_address;
+
+void reset_mem_address();
 char* translate_instruction(char* instruction);
 void parse_labels(char* instruction, int instruction_num);
 bool is_instruction(char* instruction);
 void remove_comments(char* instruction);
 
 //Helper functions
-void trim(char* str);
 int get_instruction_type(char* intruction);
 int run_regex(char* instruction, char* regex_string);
+char* convert_int_to_bin(int value);
+void reverse_string(char* str, int length);
 
 #endif

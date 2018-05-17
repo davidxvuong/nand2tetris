@@ -1,23 +1,59 @@
 #include "parser.h"
 
-char* translate_instruction(char* instruction) {
-	char* result = (char*)(malloc(sizeof(char) * MACHINE_CODE_LENGTH));
+void reset_mem_address() {
+	memory_address = 16;
+}
 
-	trim(instruction);
+char* translate_instruction(char* instruction) {
+	char* result = NULL;
+
 	int instruction_type = get_instruction_type(instruction);
+			printf("%s", instruction);
 
 	if (instruction_type == HACK_A_INSTRUCTION) {
-		printf("%s", ++instruction);
+
+		int value = lookup(instruction);
+		if (value == -1) {
+			//Symbol not found. still could be a value loaded into the A-register or a variable symbol
+			char* ptr_to_symbol = strchr(instruction, '@');
+			int index = (int)(ptr_to_symbol - instruction) + 1;
+			char num_characters = 0;
+
+
+			if (isdigit(instruction[index])) {
+				//This is a value. Get it's binary representation
+				int value = atoi(ptr_to_symbol + 1);
+				result = convert_int_to_bin(value);
+			}
+			else {
+				//This is a variable. Store symbol into symbol table and get binary representation its memory address
+				while(!isspace(instruction[index])) {
+					index++;
+					num_characters++;
+				}
+				char* value = (char*)(malloc(sizeof(char) * (num_characters + 1)));
+
+				value[0] = '\0';
+
+				strncpy(value, ptr_to_symbol + 1, num_characters);
+
+				insert(value, memory_address);
+
+				result = convert_int_to_bin(memory_address);
+
+				memory_address++;
+			}
+		}
 	}
 	else if (instruction_type == HACK_C_INSTRUCTION) {
 
 	}
 
-	return NULL;
+	return result;
 }
 
 void parse_labels(char* instruction, int instruction_num) {
-	int regex_result = run_regex(instruction, "(\\(\\w*|\\))");
+	int regex_result = run_regex(instruction, REGEX_LABEL);
 
 	if (!regex_result) {
 		//Found label. remove brackets and store data into symbol table
@@ -76,31 +112,6 @@ void remove_comments(char* instruction) {
 }
 
 //Helper function
-void trim(char *str)
-{
-     int index, i, j;
-
-    index = 0;
-
-    /* Find last index of whitespace character */
-    while(str[index] == ' ' || str[index] == '\t' || str[index] == '\n')
-    {
-        index++;
-    }
-
-
-    if(index != 0)
-    {
-        /* Shit all trailing characters to its left */
-        i = 0;
-        while(str[i + index] != '\0')
-        {
-            str[i] = str[i + index];
-            i++;
-        }
-        str[i] = '\0'; // Make sure that string is NULL terminated
-    }
-}
 
 int get_instruction_type(char* instruction) {
 	/*
@@ -145,4 +156,50 @@ int run_regex(char* instruction, char* regex_string) {
 	regex_result = regexec(&regex, instruction, 0, NULL, 0);
 
 	return regex_result;
+}
+
+char* convert_int_to_bin(int value) {
+	char* result = (char*)(malloc(sizeof(char) * MACHINE_CODE_LENGTH + 1));
+	int quotient = value;
+	int binary = 0;
+	int count = 0;
+
+	result[0] = '\0';
+
+	while(quotient != 0) {
+		binary = quotient % 2;
+		quotient = quotient / 2;
+
+		if (binary) {
+			strcat(result, "1");
+		}
+		else {
+			strcat(result, "0");
+		}
+		count++;
+	}
+
+	while (count < MACHINE_CODE_LENGTH) {
+		strcat(result, "0");
+		count++;
+	}
+
+	reverse_string(result, MACHINE_CODE_LENGTH);
+
+	return result;
+}
+
+void reverse_string(char* str, int length) {
+	int start = 0;
+	int end = length - 1;
+	char temp;
+
+
+	while (start <= end) {
+		temp = str[start];
+		str[start] = str[end];
+		str[end] = temp;
+		start++;
+		end--;
+	}
 }

@@ -67,12 +67,12 @@ void insert(char* key, int value) {
 	++(symbol_table -> size);
 }
 
-int lookup(char* key) {
+int lookup(const char* key) {
 	map_t* ptr = symbol_table -> head;
-	
+
 	while (ptr != NULL) {
-		if (strcmp(ptr -> key, key) == 0) {
-			return (ptr -> value);
+		if (strstr(key, ptr -> key) != NULL) {
+			return ptr -> value;
 		}
 		ptr = ptr -> next;
 	}

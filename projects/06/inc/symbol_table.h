@@ -4,6 +4,7 @@
 #include <stdlib.h>
 //TODO: remove include statement
 #include <stdio.h>
+#include <string.h>
 
 #ifndef STRING_BUFFER
 #define STRING_BUFFER 256
@@ -39,6 +40,6 @@ void initialize_table();
 void kill_table();
 void print_table();
 void insert(char* key, int value);
-int lookup(char* key);
+int lookup(const char* key);
 
 #endif
