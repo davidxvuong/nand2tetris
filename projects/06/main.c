@@ -149,9 +149,18 @@ int main(int argc, char* argv[]) {
 	fp = fopen(hack_file_name, "w");
 
 	//Perform 2nd pass and translate program into HACK machine code
-	// node_t* instruction = 
+	node_t* node = list -> head;
+
+	while (node != NULL) {
+		// printf("%s", node -> instruction);
+
+		translate_instruction(node -> instruction);
+		node = node -> next;
+	}
 
 	fclose(fp);
+
+	// print_table();
 
 	kill_list();
 	kill_table();

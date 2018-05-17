@@ -2,10 +2,10 @@
 #define HACK_ISA_H
 
 //C-instruction leading bits
-#define C_INSTR_LEAD_BITS	7
+#define C_INSTR_LEAD_BITS	"111"
 
 //A-Instrcution leading bits
-#define A_INSTR_LEAD_BITS	0
+#define A_INSTR_LEAD_BITS	"0"
 
 //Comp bits
 #define COMP_ZERO			"0101010"
