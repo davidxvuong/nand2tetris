@@ -10,7 +10,7 @@ char* translate_instruction(char* instruction) {
 	int instruction_type = get_instruction_type(instruction);
 
 	if (instruction_type == HACK_A_INSTRUCTION) {
-		// printf("%s\n", instruction + 1);
+
 		int value = lookup(instruction + 1);
 		if (value == -1) {
 			//Symbol not found. still could be a value loaded into the A-register or a variable symbol
@@ -43,13 +43,18 @@ char* translate_instruction(char* instruction) {
 				memory_address++;
 			}
 		}
+		else {
+			//Value found. Convert this value to binary
+			result = convert_int_to_bin(value);
+		}
 	}
 	else if (instruction_type == HACK_C_INSTRUCTION) {
-		// char* pch = strtok(instruction, "=;");
-		// while (pch != NULL) {
-		// 	printf("%s\n", pch);
-		// 	pch = strtok(NULL, "=;");
-		// }
+		printf("%s", instruction);
+		char* pch = strtok(instruction, "=;");
+		while (pch != NULL) {
+			printf("%s\n", pch);
+			pch = strtok(NULL, "=;");
+		}
 	}
 
 	return result;
