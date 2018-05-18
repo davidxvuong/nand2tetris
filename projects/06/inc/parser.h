@@ -52,5 +52,6 @@ int get_instruction_type(char* intruction);
 int run_regex(char* instruction, char* regex_string);
 char* convert_int_to_bin(int value);
 void reverse_string(char* str, int length);
+void remove_whitespaces(char* str);
 
 #endif

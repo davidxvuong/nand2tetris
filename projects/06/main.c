@@ -134,6 +134,7 @@ int main(int argc, char* argv[]) {
 		fgets(buf, STRING_BUFFER, fp);
 
 		if (is_instruction(buf)) {
+			remove_whitespaces(buf);
 			remove_comments(buf);
 			int line_num = insert_list(buf);
 			parse_labels(buf, line_num);
@@ -157,7 +158,7 @@ int main(int argc, char* argv[]) {
 		char* ml_instruction = translate_instruction(node -> instruction);
 		
 		if (ml_instruction != NULL) {
-			printf("%s\n", ml_instruction);
+			// printf("%s\n", ml_instruction);
 		}
 
 		node = node -> next;

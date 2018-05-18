@@ -71,7 +71,8 @@ int lookup(const char* key) {
 	map_t* ptr = symbol_table -> head;
 
 	while (ptr != NULL) {
-		if (strstr(key, ptr -> key) != NULL) {
+
+		if (strcmp(ptr -> key, key) == 0) {
 			return ptr -> value;
 		}
 		ptr = ptr -> next;

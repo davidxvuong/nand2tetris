@@ -10,8 +10,8 @@ char* translate_instruction(char* instruction) {
 	int instruction_type = get_instruction_type(instruction);
 
 	if (instruction_type == HACK_A_INSTRUCTION) {
-
-		int value = lookup(instruction);
+		// printf("%s\n", instruction + 1);
+		int value = lookup(instruction + 1);
 		if (value == -1) {
 			//Symbol not found. still could be a value loaded into the A-register or a variable symbol
 			char* ptr_to_symbol = strchr(instruction, '@');
@@ -45,12 +45,11 @@ char* translate_instruction(char* instruction) {
 		}
 	}
 	else if (instruction_type == HACK_C_INSTRUCTION) {
-		printf("%s", instruction);
-		char* pch = strtok(instruction, "=;");
-		while (pch != NULL) {
-			printf("%s\n", pch);
-			pch = strtok(NULL, "=;");
-		}
+		// char* pch = strtok(instruction, "=;");
+		// while (pch != NULL) {
+		// 	printf("%s\n", pch);
+		// 	pch = strtok(NULL, "=;");
+		// }
 	}
 
 	return result;
@@ -206,4 +205,34 @@ void reverse_string(char* str, int length) {
 		start++;
 		end--;
 	}
+}
+
+void remove_whitespaces(char* str) {
+	int length = strlen(str);
+	int count = 0;
+	int i, j;
+
+	if (length <= 1) {
+		return;
+	}
+
+	for (i = 0; i < length; i++) {
+		if (isspace(str[i])) {
+			count++;
+		}
+		else if (count > 0) {
+			for (j = i; j < length; j++) {
+				str[j-count] = str[j];
+				str[j] = ' ';
+			}
+
+			i = i - count -1;
+			count = 0;
+		}
+	}
+
+	if (count > 0) {
+		str[length - count] = '\0';
+	}
+
 }
