@@ -8,7 +8,6 @@ char* translate_instruction(char* instruction) {
 	char* result = NULL;
 
 	int instruction_type = get_instruction_type(instruction);
-			printf("%s", instruction);
 
 	if (instruction_type == HACK_A_INSTRUCTION) {
 
@@ -46,7 +45,12 @@ char* translate_instruction(char* instruction) {
 		}
 	}
 	else if (instruction_type == HACK_C_INSTRUCTION) {
-
+		printf("%s", instruction);
+		char* pch = strtok(instruction, "=;");
+		while (pch != NULL) {
+			printf("%s\n", pch);
+			pch = strtok(NULL, "=;");
+		}
 	}
 
 	return result;

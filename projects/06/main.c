@@ -151,10 +151,15 @@ int main(int argc, char* argv[]) {
 	//Perform 2nd pass and translate program into HACK machine code
 	node_t* node = list -> head;
 	reset_mem_address();
-	
+
 	while (node != NULL) {
 
-		translate_instruction(node -> instruction);
+		char* ml_instruction = translate_instruction(node -> instruction);
+		
+		if (ml_instruction != NULL) {
+			printf("%s\n", ml_instruction);
+		}
+
 		node = node -> next;
 	}
 
