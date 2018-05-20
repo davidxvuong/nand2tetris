@@ -47,7 +47,7 @@ void kill_list() {
 int insert_list(char* instruction) {
 	node_t* node = (node_t*)(malloc(sizeof(char)));
 	node_t* ptr;
-	int line_num;
+	int line_num = -1;
 
 	char* copy_instr = (char*)(malloc(sizeof(char) * STRING_BUFFER));
 	memcpy(copy_instr, instruction, sizeof(char) * STRING_BUFFER);
@@ -56,7 +56,7 @@ int insert_list(char* instruction) {
 
 	if (list -> head == NULL) {
 		list -> head = node;
-		node -> line_num = 1;
+		node -> line_num = 0;
 	}
 	else {
 		ptr = list -> head;
@@ -134,15 +134,14 @@ int main(int argc, char* argv[]) {
 		fgets(buf, STRING_BUFFER, fp);
 
 		if (is_instruction(buf)) {
-			remove_whitespaces(buf);
 			remove_comments(buf);
+			remove_whitespaces(buf);
 			int line_num = insert_list(buf);
 			parse_labels(buf, line_num);
 		}
 	}
 
 	fclose(fp);
-
 	fp = NULL;
 
 	char* hack_file_name = replace_substring(argv[ARGV_INDEX], "asm", "hack");
@@ -156,11 +155,12 @@ int main(int argc, char* argv[]) {
 	while (node != NULL) {
 
 		char* ml_instruction = translate_instruction(node -> instruction);
-		
+
+		//print to file
 		if (ml_instruction != NULL) {
 			// printf("%s\n", ml_instruction);
+			fputs(ml_instruction, fp);
 		}
-
 		node = node -> next;
 	}
 

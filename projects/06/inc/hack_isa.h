@@ -59,7 +59,7 @@
 #define B_COMP_D_PLUS_A			"0000010"
 #define B_COMP_D_PLUS_M			"1000010"
 #define B_COMP_D_MINUS_A		"0010111"
-#define B_COMP_D_MINUS_M		"1010111"
+#define B_COMP_D_MINUS_M		"1010011"
 #define B_COMP_A_MINUS_D		"0000011"
 #define B_COMP_M_MINUS_D		"1000011"
 #define B_COMP_D_AND_A			"0000000"
@@ -68,7 +68,7 @@
 #define B_COMP_D_OR_M			"1010101"
 
 //Dest Strings
-#define S_DEST_NULL				""
+#define S_DEST_NULL				NULL
 #define S_DEST_M				"M"
 #define S_DEST_D				"D"
 #define S_DEST_MD				"MD"
@@ -88,11 +88,11 @@
 #define B_DEST_AMD 				"111"
 
 //Jump Strings
-#define S_JUMP_NULL				""
+#define S_JUMP_NULL				NULL
 #define S_JUMP_JGT				"JGT"
 #define S_JUMP_JEQ				"JEQ"
-#define S_JUMP_NGE				"JGE"
-#define S_JUMP_JLE				"JLE"
+#define S_JUMP_JGE				"JGE"
+#define S_JUMP_JLT				"JLT"
 #define S_JUMP_JNE				"JNE"
 #define S_JUMP_JLE				"JLE"
 #define S_JUMP_JMP				"JMP"

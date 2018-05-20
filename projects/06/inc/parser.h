@@ -53,5 +53,8 @@ int run_regex(char* instruction, char* regex_string);
 char* convert_int_to_bin(int value);
 void reverse_string(char* str, int length);
 void remove_whitespaces(char* str);
+char* get_dest_bits(char* dest);
+char* get_comp_bits(char* comp);
+char* get_jump_bits(char* jump);
 
 #endif
