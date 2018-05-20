@@ -53,6 +53,7 @@ int insert_list(char* instruction) {
 	memcpy(copy_instr, instruction, sizeof(char) * STRING_BUFFER);
 
 	node -> instruction = copy_instr;
+	node -> next = NULL;
 
 	if (list -> head == NULL) {
 		list -> head = node;
