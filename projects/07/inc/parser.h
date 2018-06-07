@@ -7,6 +7,11 @@
 #include <regex.h>
 #include "uthash.h"
 #include "vm_info.h"
+#include <stdio.h>
+
+#ifndef STRING_BUFFER
+#define STRING_BUFFER 256
+#endif
 
 //Structure for Hash Table
 typedef struct {

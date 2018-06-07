@@ -5,17 +5,12 @@ pair_t* parser_table = NULL;
 vm_instr_t* parse_instruction(char* instr) {
 	char* ptr = strstr(instr, "//");
 
-	if (ptr == NULL) {
+	if (ptr != NULL) {
 		return NULL;
 	}
 
 	vm_instr_t* vm_instr_info = NULL;
-	int regex_result = run_regex(instr, COMMENT_REGEX);
-
-	if (!regex_result) {
-		//This is a comment. We can skim them
-		return NULL;
-	}
+	int regex_result;
 
 	regex_result = run_regex(instr, MEM_CMD_REGEX);
 
@@ -78,8 +73,8 @@ int run_regex(char* str, char* regex_str) {
 int get_mem_segment(char* str) {
 	char* first_ptr = strchr(str, ' ');
 	char* last_ptr = strrchr(str, ' ');
-	int length = (int)(last_ptr - first_ptr);
-	int index = (int)(str - first_ptr);
+	int length = (int)(last_ptr - first_ptr) - 1;
+	int index = (int)(first_ptr - str) + 1;
 	char segment[length + 1];
 
 	strncpy(segment, &str[index], length);
@@ -90,12 +85,17 @@ int get_mem_segment(char* str) {
 
 int get_mem_value(char* str) {
 	char* last_ptr = strrchr(str, ' ');
-	int index = (int)(str - last_ptr);
+	int index = (int)(last_ptr - str) + 1;
 	int length = index;
 	char segment [length + 1];
+	int result;
 
 	strcpy(segment, &str[index]);
 	segment[length] = '\0';
+
+	result = strtol(segment, NULL, 10);
+
+	printf("%d\n", result);
 
 	return find_parser_value(segment);	
 }
@@ -131,6 +131,12 @@ void initialize_parser_hash_table() {
 	add_parser_value(MEM_STATIC, STATIC);
 	add_parser_value(MEM_POINTER, POINTER);
 	add_parser_value(MEM_TEMP, TEMP);
+
+	unsigned int num_users;
+	num_users = HASH_COUNT(parser_table);
+	printf("there are %u entries\n", num_users);
+
+	printf("%d\n", find_parser_value("constant"));
 }
 
 void kill_parser_hash_table() {
@@ -148,13 +154,13 @@ void add_parser_value(char* id, int value) {
 	char* local_id = copy_string(id);
 	pair_t* s;
 
-	HASH_FIND_INT(parser_table, local_id, s);
+	HASH_FIND_STR(parser_table, local_id, s);
 
 	if (s == NULL) {
 		s = (pair_t*)(malloc(sizeof(pair_t)));
 		s -> id = local_id;
 		s -> value = value;
-		HASH_ADD_INT(parser_table, id, s);
+		HASH_ADD_KEYPTR(hh, parser_table, s -> id, strlen(s -> id), s);
 	}
 }
 
@@ -163,7 +169,7 @@ int find_parser_value(char* id) {
 
 	pair_t* s;
 
-	HASH_FIND_INT(parser_table, local_id, s);
+	HASH_FIND_STR(parser_table, local_id, s);
 
 	return s -> value;
 }
