@@ -43,6 +43,9 @@ vm_instr_t* parse_instruction(char* instr) {
 
 	if (!regex_result) {
 		//This is an arithmetic/logic command
+
+		remove_whitespaces(instr);
+
 		vm_instr_info = (vm_instr_t*)(malloc(sizeof(vm_instr_info)));
 		vm_instr_info -> instr_type = ARITH_LOGIC_CMD;
 		vm_instr_info -> logical_instr_info = find_parser_value(instr);
@@ -93,11 +96,10 @@ int get_mem_value(char* str) {
 	strcpy(segment, &str[index]);
 	segment[length] = '\0';
 
+	//Convert to integer
 	result = strtol(segment, NULL, 10);
 
-	printf("%d\n", result);
-
-	return find_parser_value(segment);	
+	return result;	
 }
 
 char* copy_string(char* str) {
@@ -131,12 +133,6 @@ void initialize_parser_hash_table() {
 	add_parser_value(MEM_STATIC, STATIC);
 	add_parser_value(MEM_POINTER, POINTER);
 	add_parser_value(MEM_TEMP, TEMP);
-
-	unsigned int num_users;
-	num_users = HASH_COUNT(parser_table);
-	printf("there are %u entries\n", num_users);
-
-	printf("%d\n", find_parser_value("constant"));
 }
 
 void kill_parser_hash_table() {
@@ -172,4 +168,34 @@ int find_parser_value(char* id) {
 	HASH_FIND_STR(parser_table, local_id, s);
 
 	return s -> value;
+}
+
+void remove_whitespaces(char* str) {
+	int length = strlen(str);
+	int count = 0;
+	int i, j;
+
+	if (length <= 1) {
+		return;
+	}
+
+	for (i = 0; i < length; i++) {
+		if (isspace(str[i])) {
+			count++;
+		}
+		else if (count > 0) {
+			for (j = i; j < length; j++) {
+				str[j-count] = str[j];
+				str[j] = ' ';
+			}
+
+			i = i - count -1;
+			count = 0;
+		}
+	}
+
+	if (count > 0) {
+		str[length - count] = '\0';
+	}
+
 }

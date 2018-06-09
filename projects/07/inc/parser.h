@@ -20,6 +20,9 @@ typedef struct {
 	UT_hash_handle hh;
 } pair_t;
 
+#ifndef VM_STRUCT
+#define VM_STRUCT
+
 typedef struct {
 	int mem_segment;
 	int value;
@@ -33,6 +36,8 @@ typedef struct {
 	};
 } vm_instr_t;
 
+#endif
+
 vm_instr_t* parse_instruction(char* instr);
 int run_regex(char* str, char* regex);
 int get_mem_segment(char* str);
@@ -43,5 +48,6 @@ void initialize_parser_hash_table();
 void kill_parser_hash_table();
 void add_parser_value(char* id, int value);
 int find_parser_value(char* id);
+void remove_whitespaces(char* str);
 
 #endif

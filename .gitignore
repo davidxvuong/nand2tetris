@@ -3,3 +3,4 @@ tools/
 *.hack
 HackAssembler
 VMTranslator
+*.asm
