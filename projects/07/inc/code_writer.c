@@ -26,6 +26,7 @@ char* generate_hack_instruction(vm_instr_t* instr, char* filename) {
 				break;
 			case LT:
 				strcpy(hack_instr, lt_command(jump_counter));
+				jump_counter++;
 				break;
 			case AND:
 				strcpy(hack_instr, and_command());
