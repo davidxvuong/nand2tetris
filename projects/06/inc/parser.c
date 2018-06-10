@@ -268,6 +268,8 @@ int run_regex(char* instruction, char* regex_string) {
 
 	regex_result = regexec(&regex, instruction, 0, NULL, 0);
 
+	regfree(&regex);
+
 	return regex_result;
 }
 

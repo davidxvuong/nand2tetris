@@ -22,7 +22,7 @@ char* replace_substring(const char* string, const char* old_string, const char* 
 		return NULL;
 	}
 
-	result = (char*)(malloc(sizeof(char) * (string_length - old_string_length + new_string_length)));
+	result = malloc(sizeof(char) * (string_length - old_string_length + new_string_length + 1));
 
 	strncpy(result, string, string_length - old_string_length);
 	result[string_length - old_string_length] = '\0';
@@ -38,7 +38,7 @@ char* get_file_name(const char* str) {
 	char* last_ptr = strrchr(str, '.') - 1;
 	int length = (int)(last_ptr - start_ptr) + 1;
 
-	result = (char*)(malloc(sizeof(char) * length));
+	result = malloc(sizeof(char) * (length + 1));
 	strncpy(result, start_ptr, length);
 	result[length] = '\0';
 
@@ -75,15 +75,34 @@ int main(int argc, char* argv[]) {
 	initialize_jump_counter();
 
 	while(!feof(read_fp)) {
-		char* buf = (char*)(malloc(sizeof(char) * STRING_BUFFER));
+		vm_instr_t* parsed_instr = NULL;
+		char* buf = malloc(sizeof(char) * STRING_BUFFER);
+		memset(buf, 0, sizeof(buf));
+		
 		fgets(buf, STRING_BUFFER, read_fp);
-
-		vm_instr_t* parsed_instr = parse_instruction(buf);
+		// remove_whitespaces(buf);
+		parsed_instr = parse_instruction(buf);
 
 		if (parsed_instr != NULL) {
-			// char* asm_instr = generate_hack_intruction(parsed_instr, filename);
+			char* asm_instr = generate_hack_instruction(parsed_instr, filename);
+			char* comment_vm_instr = malloc(sizeof(char) * STRING_BUFFER);
 
+			comment_vm_instr[0] = '\0';
+			strcat(comment_vm_instr, "\n");
+			strcat(comment_vm_instr, "//");
+			strcat(comment_vm_instr, buf);
+
+			if (strchr(buf, '\n') == NULL) {
+				strcat(comment_vm_instr, "\n");
+			}
+
+			fputs(comment_vm_instr, write_fp);
+			fputs(asm_instr, write_fp);
+			free(parsed_instr);
+			free(comment_vm_instr);
 		}
+
+		free(buf);
 	}
 
 	fclose(read_fp);

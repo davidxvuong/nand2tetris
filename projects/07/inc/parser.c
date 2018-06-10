@@ -16,7 +16,7 @@ vm_instr_t* parse_instruction(char* instr) {
 
 	if (!regex_result) {
 		//This is a memory stack command (push/pop)
-		vm_instr_info = (vm_instr_t*)(malloc(sizeof(vm_instr_info)));
+		vm_instr_info = malloc(sizeof(vm_instr_t));
 
 		regex_result = run_regex(instr, PUSH_CMD_REGEX);
 
@@ -29,7 +29,7 @@ vm_instr_t* parse_instruction(char* instr) {
 			vm_instr_info -> instr_type = POP_CMD;
 		}
 
-		mem_instr_t* mem_info = (mem_instr_t*)(malloc(sizeof(mem_instr_t)));
+		mem_instr_t* mem_info = malloc(sizeof(mem_instr_t));
 
 		mem_info -> mem_segment = get_mem_segment(instr);
 		mem_info -> value = get_mem_value(instr);
@@ -46,7 +46,7 @@ vm_instr_t* parse_instruction(char* instr) {
 
 		remove_whitespaces(instr);
 
-		vm_instr_info = (vm_instr_t*)(malloc(sizeof(vm_instr_info)));
+		vm_instr_info = malloc(sizeof(vm_instr_t));
 		vm_instr_info -> instr_type = ARITH_LOGIC_CMD;
 		vm_instr_info -> logical_instr_info = find_parser_value(instr);
 	
@@ -104,7 +104,7 @@ int get_mem_value(char* str) {
 
 char* copy_string(char* str) {
 	int length = strlen(str);
-	char* val = (char*)(malloc(sizeof(char) * (length + 1)));
+	char* val = malloc(sizeof(char) * (length + 1));
 
 	strcpy(val, str);
 	val[length] = '\0';
@@ -153,7 +153,7 @@ void add_parser_value(char* id, int value) {
 	HASH_FIND_STR(parser_table, local_id, s);
 
 	if (s == NULL) {
-		s = (pair_t*)(malloc(sizeof(pair_t)));
+		s = malloc(sizeof(pair_t));
 		s -> id = local_id;
 		s -> value = value;
 		HASH_ADD_KEYPTR(hh, parser_table, s -> id, strlen(s -> id), s);
